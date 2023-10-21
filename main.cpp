@@ -2,8 +2,8 @@
 #include <vector>
 #include <random>
 
-std::vector<bool> board(100,false);
-int SIZE = board.size();
+int SIZE = 100;
+std::vector<bool> board(SIZE,false);
 std::random_device rd;
 std::mt19937 random_gen(rd());
 

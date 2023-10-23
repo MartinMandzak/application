@@ -1,11 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <chrono>
 
 int SIZE = 100;
 std::vector<bool> board(SIZE,false);
-std::random_device rd;
-std::mt19937 random_gen(rd());
+//std::random_device rd; - slow-updating seed
+unsigned seed = std::chrono::system_clock::now().time_since_epoch().count(); //quick-updating seed
+std::mt19937 random_gen(seed);
 
 void draw_board(){	
 	for(int idx=0;idx<SIZE;idx++){

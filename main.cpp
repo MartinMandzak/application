@@ -1,10 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include <chrono>
 #include <windows.h>
+#include <chrono>
+#include "ImaGen.h"
 
-int SIDE = 20;
+int SIDE = 200;
 int AREA = pow(SIDE,2);
 
 std::vector<bool> board(AREA,false);
@@ -14,16 +15,8 @@ unsigned seed = std::chrono::system_clock::now().time_since_epoch().count(); //q
 std::mt19937 random_gen(seed); //pseudo random system using a random seed	
 std::uniform_int_distribution<int> island_chance(0,9); //range dist, could be float by using "real"
 
-void draw_board(){	
-	for(int idx=0;idx<AREA;idx++){
-		if(idx%SIDE ==0){std::cout<<std::endl;}
-		if(board[idx]){
-			std::cout<<" O ";
-		}else{
-			std::cout<<"   ";
-		}
-	}
-}
+auto pixels = new unsigned char[SIDE*SIDE*3]; //3 for rgb
+void map_output(unsigned char oneByte){ fputc(oneByte,fopen("./maps","w"));};
 
 void generate_islands(){
 	for(int idx = 0;idx<AREA;idx++){
@@ -65,33 +58,26 @@ int check_population(int idx){
 	return relative_population;
 }
 
-void game_of_life(int n_of_iterations){
-	for(int n = 0;n <= n_of_iterations;n++){
-		for(int idx=0;idx<AREA;idx++){
-			int population = check_population(idx);
-			if(board[idx]){
-				if(population < 2 || population >3){
-					board[idx] = false;
-				}
-			}else{
-				if(population == 3){
-					board[idx] = true;
-				}
-			}
-		}
-			draw_board();
-			std::cout<<"\n\n\n";
-			Sleep(250);
-	}
-}
+
 
 int main(){
 
 	int n = 100;
-	
 	generate_islands();
-	draw_board();
-	game_of_life(n);
+	ImaGen::writeJpeg(map_output, pixels, SIDE,SIDE);
 
 	return 0;  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,6 +4,11 @@
 #include <windows.h>
 #include <chrono>
 #include "ImaGen.h"
+#include "opencv2/highgui/highgui.hpp" //:CLUELESS:
+
+/*
+ * https://www.geeksforgeeks.org/opencv-c-plus-plus-program-to-create-a-single-colored-blank-image/
+ */
 
 int SIDE = 200;
 int AREA = pow(SIDE,2);
@@ -64,7 +69,9 @@ int main(){
 
 	int n = 100;
 	generate_islands();
-	ImaGen::writeJpeg(map_output, pixels, SIDE,SIDE);
+
+	Mat img(SIDE,SIDE,CV_8UC3, Scalar(0,0,255));
+	if(img.empty()){std::perror(ERROR);return 1;}
 
 	return 0;  
 }
